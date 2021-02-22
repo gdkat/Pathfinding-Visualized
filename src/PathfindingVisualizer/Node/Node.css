@@ -1,0 +1,25 @@
+.node {
+  flex: 1;
+  border: 1px solid black;
+  height: 16px;
+}
+
+.node-visited {
+  background-color: blue;
+}
+
+.node-optimal {
+  background-color: yellow;
+}
+
+.node-wall {
+  background-color: black;
+}
+
+.node-start {
+  background-color: green;
+}
+
+.node-finish {
+  background-color: red;
+}
