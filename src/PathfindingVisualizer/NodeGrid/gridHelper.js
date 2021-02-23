@@ -1,5 +1,6 @@
 const defaultNode = {
   weight: 1,
+  heuristic: Infinity,
   visited: false,
   visitedIndex: 0,
   optimal: false,
@@ -14,6 +15,7 @@ const unvisitedNode = {
   optimal: false,
   prev: null,
   distance: Infinity,
+  heuristic: Infinity,
 };
 
 export const genNodeGrid = (gridProps) => {

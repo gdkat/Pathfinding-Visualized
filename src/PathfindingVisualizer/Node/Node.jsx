@@ -8,6 +8,7 @@ const Node = (props) => {
     row, // row index
     col, // col index
     weight, // weight to travel through
+    heuristic, // heuristic value for astr
     visited, // visited boolean
     visitedIndex, // index (in order) of vars visited
     optimal, // is part of optimal path

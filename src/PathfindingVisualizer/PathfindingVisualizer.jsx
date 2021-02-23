@@ -1,4 +1,4 @@
-import { useEffect, useRef, useReducer } from "react";
+import { useReducer } from "react";
 import {
   reducer as pathfindingReducer,
   initialState as pathfindingInitialState,
@@ -6,8 +6,8 @@ import {
 import PathfindingContext from "../context/PathfindingContext";
 import "./PathfindingVisualizer.css";
 import NodeGrid from "./NodeGrid/NodeGrid";
-import dijkstra from "../search/dijkstra";
 import { genNodeGrid, copyGrid } from "./NodeGrid/gridHelper";
+import supportedAlgorithms from "../search/supportedAlgorithms";
 
 const PathfindingVisualizer = (props) => {
   const [state, dispatch] = useReducer(
@@ -29,13 +29,16 @@ const PathfindingVisualizer = (props) => {
     dispatch({ type: "SET_SORTING_INACTIVE" });
   };
 
-  const performDjikstra = () => {
+  const performSearch = () => {
     if (sortingProps.active) return;
 
     dispatch({ type: "SET_SORTING_ACTIVE" });
     const gridCopy = copyGrid(grid, { unvisited: true });
     if (gridProps.start != null && gridProps.end != null) {
-      const [result] = dijkstra(gridCopy, gridProps);
+      const [result] = supportedAlgorithms[sortingProps.type](
+        gridCopy,
+        gridProps
+      );
       dispatch({ type: "SET_GRID", payload: result });
     }
   };
@@ -55,6 +58,14 @@ const PathfindingVisualizer = (props) => {
       });
   };
 
+  const onAlgoToggle = (e) => {
+    softReset();
+    dispatch({
+      type: "SET_SORTING_TYPE",
+      payload: e.target.options[e.target.selectedIndex].text,
+    });
+  };
+
   const generateRandomWeightedGraph = (e) => {
     dispatch({
       type: "SET_GRID",
@@ -65,7 +76,20 @@ const PathfindingVisualizer = (props) => {
   return (
     <PathfindingContext.Provider value={[state, dispatch]}>
       <div className="pathfinding-visualizer">
-        <button className="visualizer-btn" onClick={performDjikstra}>
+        <label for="cars">Choose an algorithm: </label>
+        <select
+          id="algos"
+          name="algos"
+          value={sortingProps.type}
+          onChange={onAlgoToggle}
+        >
+          {Object.keys(supportedAlgorithms).map((el, index) => (
+            <option key={index} value={el}>
+              {el}
+            </option>
+          ))}
+        </select>
+        <button className="visualizer-btn" onClick={performSearch}>
           Visualize
         </button>
         <button className="soft-reset-btn" onClick={softReset}>
