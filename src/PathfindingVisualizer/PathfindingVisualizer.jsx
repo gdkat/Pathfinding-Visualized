@@ -45,7 +45,10 @@ const PathfindingVisualizer = (props) => {
 
   const softReset = () => {
     clearTimeout(recentTimeout.current);
-    dispatch({ type: "SET_GRID", payload: copyGrid(grid, true) });
+    dispatch({
+      type: "SET_GRID",
+      payload: copyGrid(grid, { unvisited: true }),
+    });
     dispatch({ type: "SET_VISITED_ARR", payload: [] });
     dispatch({ type: "SET_SORTING_INACTIVE" });
   };
@@ -56,7 +59,7 @@ const PathfindingVisualizer = (props) => {
     softReset();
 
     dispatch({ type: "SET_SORTING_ACTIVE" });
-    const gridCopy = copyGrid(grid, true);
+    const gridCopy = copyGrid(grid, { unvisited: true });
     if (gridProps.start != null && gridProps.end != null) {
       const [result, visitedArr] = dijkstra(gridCopy, gridProps);
       dispatch({ type: "SET_VISITED_ARR", payload: visitedArr });
@@ -69,24 +72,58 @@ const PathfindingVisualizer = (props) => {
       payload: parseFloat(e.target.value),
     });
 
+  const onWeightedToggle = (e) => {
+    dispatch({ type: "SET_WEIGHTED_GRID", payload: e.target.checked });
+    e.target.checked === false &&
+      dispatch({
+        type: "SET_GRID",
+        payload: copyGrid(grid, { unvisited: true, weighted: false }),
+      });
+  };
+
+  const generateRandomWeightedGraph = (e) => {
+    dispatch({
+      type: "SET_GRID",
+      payload: copyGrid(grid, { unvisited: true, weighted: true }),
+    });
+  };
+
   return (
     <PathfindingContext.Provider value={[state, dispatch]}>
       <div className="pathfinding-visualizer">
-        <button className="visualizer-button" onClick={performDjikstra}>
+        <button className="visualizer-btn" onClick={performDjikstra}>
           Visualize
         </button>
-        <button className="visualizer-button" onClick={softReset}>
+        <button className="soft-reset-btn" onClick={softReset}>
           Soft Reset
         </button>
-        <button className="visualizer-button" onClick={reset}>
+        <button className="reset-btn" onClick={reset}>
           Reset
         </button>
+        <input
+          type="checkbox"
+          id="weighted"
+          name="weighted"
+          value="weighted"
+          onClick={onWeightedToggle}
+          disabled={sortingProps.active}
+        />
+        {gridProps.weighted && (
+          <button
+            className="generate-random-weights-btn"
+            onClick={generateRandomWeightedGraph}
+            disabled={sortingProps.active}
+          >
+            Generate Random Weights
+          </button>
+        )}
         <input
           type="number"
           step="0.01"
           name="animation-speed"
           onChange={onAnimationSpeedChange}
           value={sortingProps.speed}
+          disabled={sortingProps.active}
         />
         <NodeGrid nodeGrid={grid} />
       </div>

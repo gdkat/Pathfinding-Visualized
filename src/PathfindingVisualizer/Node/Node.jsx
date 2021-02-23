@@ -18,7 +18,13 @@ const Node = (props) => {
   } = props.nodeProps;
 
   const [
-    { mouseDown, sortingProps, movingStart, movingEnd },
+    {
+      mouseDown,
+      sortingProps,
+      movingStart,
+      movingEnd,
+      gridProps: { weighted },
+    },
     dispatch,
   ] = useContext(PathfindingContext);
 
@@ -28,10 +34,11 @@ const Node = (props) => {
     "node-optimal": optimal,
     "node-wall": wall,
     "node-start": isStart,
-    "node-finish": isEnd,
+    "node-end": isEnd,
   });
 
   const onMouseDown = (e) => {
+    e.preventDefault();
     dispatch({ type: "SET_MOUSE_DOWN" });
     if (!sortingProps.active && !sortingProps.complete) {
       if (isStart) dispatch({ type: "MOVING_START" });
@@ -45,12 +52,14 @@ const Node = (props) => {
   };
 
   const onMouseUp = (e) => {
+    e.preventDefault();
     mouseDown && dispatch({ type: "SET_MOUSE_UP" });
     if (movingStart) dispatch({ type: "SET_START" });
     else if (movingEnd) dispatch({ type: "SET_END" });
   };
 
   const onMouseEnter = (e) => {
+    e.preventDefault();
     if (mouseDown && !sortingProps.active && !sortingProps.complete) {
       if (movingStart)
         dispatch({
@@ -78,7 +87,9 @@ const Node = (props) => {
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseEnter={onMouseEnter}
-    />
+    >
+      {weighted && !isStart && !isEnd && weight}
+    </div>
   );
 };
 

@@ -14,7 +14,7 @@ const dijkstra = (grid, gridProps) => {
   let found = null;
 
   const visit = (node) => {
-    if (node == null || node.wall) return;
+    if (node == null || (node.wall && !node.isStart && !node.isEnd)) return;
 
     node.visited = true;
     visitedNodes.push(node);

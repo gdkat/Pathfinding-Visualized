@@ -8,7 +8,6 @@ const defaultNode = {
 };
 
 const unvisitedNode = {
-  weight: 1,
   visited: false,
   optimal: false,
   prev: null,
@@ -37,7 +36,8 @@ export const genNodeGrid = (gridProps) => {
   return grid;
 };
 
-export const copyGrid = (grid, unvisited, changeStart, changeEnd) => {
+export const copyGrid = (grid, copyProps = {}) => {
+  const { unvisited, weighted, changeStart, changeEnd } = copyProps;
   const newGrid = [];
 
   for (let i = 0; i < grid.length; i++) {
@@ -51,6 +51,8 @@ export const copyGrid = (grid, unvisited, changeStart, changeEnd) => {
           newNode[key] = val;
       if (changeStart) newNode.isStart = false;
       if (changeEnd) newNode.isEnd = false;
+      if (weighted === true) newNode.weight = parseInt(Math.random() * 10);
+      else if (weighted === false) newNode.weight = 1;
       newGrid[i].push(newNode);
     }
   }
@@ -69,7 +71,7 @@ export const replaceNode = (node, grid) => {
 };
 
 export const changeStartOrEndNode = (node, grid, end) => {
-  const newGrid = copyGrid(grid, false, !end, end);
+  const newGrid = copyGrid(grid, { changeStart: !end, changeEnd: end });
 
   const { row, col } = node;
 

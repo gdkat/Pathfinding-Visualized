@@ -15,6 +15,7 @@ const initialGridProps = {
     row: 10,
     col: 35,
   },
+  weighted: false,
 };
 
 export const initialState = {
@@ -35,6 +36,14 @@ export const reducer = (state, action) => {
   switch (action.type) {
     case "SET_GRID_PROPS":
       return { ...state, gridProps: action.payload };
+    case "SET_WEIGHTED_GRID":
+      return {
+        ...state,
+        gridProps: {
+          ...state.gridProps,
+          weighted: action.payload,
+        },
+      };
     case "SET_GRID":
       return { ...state, grid: action.payload };
     case "SET_NODE":

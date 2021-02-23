@@ -1,4 +1,5 @@
 import Node from "../Node/Node";
+import "./NodeGrid.css";
 
 const NodeGrid = (props) => {
   const { nodeGrid } = props;

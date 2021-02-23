@@ -1,0 +1,11 @@
+.node-grid {
+  position: relative;
+}
+
+.node-grid-row {
+  border-bottom: 0.5px solid rgb(32, 32, 32);
+}
+
+.node-grid-row:first-child {
+  border-top: 0.5px solid rgb(32, 32, 32);
+}
