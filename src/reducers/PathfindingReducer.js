@@ -1,4 +1,8 @@
-import { genNodeGrid } from "../PathfindingVisualizer/NodeGrid/gridHelper";
+import {
+  genNodeGrid,
+  replaceNode,
+  changeStartOrEndNode,
+} from "../PathfindingVisualizer/NodeGrid/gridHelper";
 
 const initialGridProps = {
   rows: 20,
@@ -22,6 +26,9 @@ export const initialState = {
     speed: 10,
     active: false,
   },
+  mouseDown: false,
+  movingStart: false,
+  movingEnd: false,
 };
 
 export const reducer = (state, action) => {
@@ -30,6 +37,40 @@ export const reducer = (state, action) => {
       return { ...state, gridProps: action.payload };
     case "SET_GRID":
       return { ...state, grid: action.payload };
+    case "SET_NODE":
+      return { ...state, grid: replaceNode(action.payload, state.grid) };
+    case "MOVING_START":
+      return { ...state, movingStart: true };
+    case "MOVE_START":
+      return {
+        ...state,
+        grid: changeStartOrEndNode(action.payload, state.grid),
+        gridProps: {
+          ...state.gridProps,
+          start: {
+            row: action.payload.row,
+            col: action.payload.col,
+          },
+        },
+      };
+    case "SET_START":
+      return { ...state, movingStart: false };
+    case "MOVING_END":
+      return { ...state, movingEnd: true };
+    case "MOVE_END":
+      return {
+        ...state,
+        grid: changeStartOrEndNode(action.payload, state.grid, true),
+        gridProps: {
+          ...state.gridProps,
+          end: {
+            row: action.payload.row,
+            col: action.payload.col,
+          },
+        },
+      };
+    case "SET_END":
+      return { ...state, movingEnd: false };
     case "SET_VISITED_ARR":
       return { ...state, visitedArr: action.payload };
     case "SET_SORTING_PROPS":
@@ -72,7 +113,10 @@ export const reducer = (state, action) => {
           active: false,
         },
       };
-
+    case "SET_MOUSE_DOWN":
+      return { ...state, mouseDown: true };
+    case "SET_MOUSE_UP":
+      return { ...state, mouseDown: false };
     default:
       return state;
   }

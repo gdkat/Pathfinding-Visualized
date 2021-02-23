@@ -14,7 +14,7 @@ const dijkstra = (grid, gridProps) => {
   let found = null;
 
   const visit = (node) => {
-    if (node == null) return;
+    if (node == null || node.wall) return;
 
     node.visited = true;
     visitedNodes.push(node);
@@ -53,7 +53,8 @@ const dijkstra = (grid, gridProps) => {
     }
   };
 
-  while (!found && visitedNodes.length < rows * cols) visit(heap.pop());
+  while (!found && visitedNodes.length < rows * cols && heap.size() > 0)
+    visit(heap.pop());
 
   if (found) traceOptimalPath();
 

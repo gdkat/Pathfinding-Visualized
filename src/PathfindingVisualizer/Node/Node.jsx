@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext } from "react";
 import "./Node.css";
 import clsx from "classnames";
+import PathfindingContext from "../../context/PathfindingContext";
 
 const Node = (props) => {
   const {
@@ -16,7 +17,10 @@ const Node = (props) => {
     isEnd, // isFinish
   } = props.nodeProps;
 
-  const { onMouseDown, onMouseEnter, onMouseUp } = props;
+  const [
+    { mouseDown, sortingProps, movingStart, movingEnd },
+    dispatch,
+  ] = useContext(PathfindingContext);
 
   const classes = clsx({
     node: true,
@@ -27,12 +31,53 @@ const Node = (props) => {
     "node-finish": isEnd,
   });
 
+  const onMouseDown = (e) => {
+    dispatch({ type: "SET_MOUSE_DOWN" });
+    if (!sortingProps.active && !sortingProps.complete) {
+      if (isStart) dispatch({ type: "MOVING_START" });
+      else if (isEnd) dispatch({ type: "MOVING_END" });
+      else
+        dispatch({
+          type: "SET_NODE",
+          payload: { ...props.nodeProps, wall: !wall },
+        });
+    }
+  };
+
+  const onMouseUp = (e) => {
+    mouseDown && dispatch({ type: "SET_MOUSE_UP" });
+    if (movingStart) dispatch({ type: "SET_START" });
+    else if (movingEnd) dispatch({ type: "SET_END" });
+  };
+
+  const onMouseEnter = (e) => {
+    if (mouseDown && !sortingProps.active && !sortingProps.complete) {
+      if (movingStart)
+        dispatch({
+          type: "MOVE_START",
+          payload: props.nodeProps,
+        });
+      else if (movingEnd)
+        dispatch({
+          type: "MOVE_END",
+          payload: props.nodeProps,
+        });
+      else
+        !isStart &&
+          !isEnd &&
+          dispatch({
+            type: "SET_NODE",
+            payload: { ...props.nodeProps, wall: !wall },
+          });
+    }
+  };
+
   return (
     <div
       className={classes}
-      /* onMouseDown={() => onMouseDown()}
-      onMouseUp={() => onMouseUp()}
-      onMouseEnter={() => onMouseEnter()} */
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseEnter={onMouseEnter}
     />
   );
 };

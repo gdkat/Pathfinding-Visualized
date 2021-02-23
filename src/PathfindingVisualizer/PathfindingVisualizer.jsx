@@ -43,13 +43,20 @@ const PathfindingVisualizer = (props) => {
     dispatch({ type: "SET_SORTING_INACTIVE" });
   };
 
+  const softReset = () => {
+    clearTimeout(recentTimeout.current);
+    dispatch({ type: "SET_GRID", payload: copyGrid(grid, true) });
+    dispatch({ type: "SET_VISITED_ARR", payload: [] });
+    dispatch({ type: "SET_SORTING_INACTIVE" });
+  };
+
   const performDjikstra = () => {
     if (sortingProps.active) return;
 
-    reset();
+    softReset();
 
     dispatch({ type: "SET_SORTING_ACTIVE" });
-    const gridCopy = genNodeGrid(gridProps);
+    const gridCopy = copyGrid(grid, true);
     if (gridProps.start != null && gridProps.end != null) {
       const [result, visitedArr] = dijkstra(gridCopy, gridProps);
       dispatch({ type: "SET_VISITED_ARR", payload: visitedArr });
@@ -67,6 +74,9 @@ const PathfindingVisualizer = (props) => {
       <div className="pathfinding-visualizer">
         <button className="visualizer-button" onClick={performDjikstra}>
           Visualize
+        </button>
+        <button className="visualizer-button" onClick={softReset}>
+          Soft Reset
         </button>
         <button className="visualizer-button" onClick={reset}>
           Reset
