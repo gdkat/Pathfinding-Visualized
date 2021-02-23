@@ -21,7 +21,7 @@ const initialGridProps = {
 export const initialState = {
   gridProps: initialGridProps,
   grid: genNodeGrid(initialGridProps),
-  visitedArr: [],
+  // visitedArr: [],
   sortingProps: {
     type: "dijkstra",
     speed: 10,
@@ -80,8 +80,8 @@ export const reducer = (state, action) => {
       };
     case "SET_END":
       return { ...state, movingEnd: false };
-    case "SET_VISITED_ARR":
-      return { ...state, visitedArr: action.payload };
+    // case "SET_VISITED_ARR":
+    //   return { ...state, visitedArr: action.payload };
     case "SET_SORTING_PROPS":
       return {
         ...state,

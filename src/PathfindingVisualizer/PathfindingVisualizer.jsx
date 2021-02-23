@@ -14,55 +14,29 @@ const PathfindingVisualizer = (props) => {
     pathfindingReducer,
     pathfindingInitialState
   );
-  const { gridProps, grid, visitedArr, sortingProps } = state;
-  const recentTimeout = useRef(null);
-
-  useEffect(() => {
-    recentTimeout.current = setTimeout(() => {
-      if (visitedArr.length < 1) {
-        dispatch({ type: "SET_SORTING_INACTIVE" });
-        return;
-      }
-
-      const gridCopy = copyGrid(grid);
-      const visited = visitedArr[0];
-
-      const newVisitedArr = visitedArr.slice(1);
-
-      gridCopy[visited.row][visited.col] = visited;
-
-      dispatch({ type: "SET_GRID", payload: gridCopy });
-      dispatch({ type: "SET_VISITED_ARR", payload: newVisitedArr });
-    }, sortingProps.speed);
-  }, [visitedArr]);
+  const { gridProps, grid, sortingProps } = state;
 
   const reset = () => {
-    clearTimeout(recentTimeout.current);
     dispatch({ type: "SET_GRID", payload: genNodeGrid(gridProps) });
-    dispatch({ type: "SET_VISITED_ARR", payload: [] });
     dispatch({ type: "SET_SORTING_INACTIVE" });
   };
 
   const softReset = () => {
-    clearTimeout(recentTimeout.current);
     dispatch({
       type: "SET_GRID",
       payload: copyGrid(grid, { unvisited: true }),
     });
-    dispatch({ type: "SET_VISITED_ARR", payload: [] });
     dispatch({ type: "SET_SORTING_INACTIVE" });
   };
 
   const performDjikstra = () => {
     if (sortingProps.active) return;
 
-    softReset();
-
     dispatch({ type: "SET_SORTING_ACTIVE" });
     const gridCopy = copyGrid(grid, { unvisited: true });
     if (gridProps.start != null && gridProps.end != null) {
-      const [result, visitedArr] = dijkstra(gridCopy, gridProps);
-      dispatch({ type: "SET_VISITED_ARR", payload: visitedArr });
+      const [result] = dijkstra(gridCopy, gridProps);
+      dispatch({ type: "SET_GRID", payload: result });
     }
   };
 
@@ -119,7 +93,7 @@ const PathfindingVisualizer = (props) => {
         )}
         <input
           type="number"
-          step="0.01"
+          step="1"
           name="animation-speed"
           onChange={onAnimationSpeedChange}
           value={sortingProps.speed}

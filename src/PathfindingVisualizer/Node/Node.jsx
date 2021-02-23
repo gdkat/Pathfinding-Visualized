@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import "./Node.css";
 import clsx from "classnames";
 import PathfindingContext from "../../context/PathfindingContext";
@@ -9,6 +9,7 @@ const Node = (props) => {
     col, // col index
     weight, // weight to travel through
     visited, // visited boolean
+    visitedIndex, // index (in order) of vars visited
     optimal, // is part of optimal path
     wall, // is wall
     prev, // previous node in trail
@@ -83,12 +84,19 @@ const Node = (props) => {
 
   return (
     <div
+      id={`${row}-${col}`}
       className={classes}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseEnter={onMouseEnter}
+      style={{
+        "--delay": visitedIndex,
+        "--delayFactor": `${sortingProps.speed}ms`,
+      }}
     >
-      {weighted && !isStart && !isEnd && weight}
+      {weighted && !isStart && !isEnd && (
+        <div className="node-weight">{weight}</div>
+      )}
     </div>
   );
 };

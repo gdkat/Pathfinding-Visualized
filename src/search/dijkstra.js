@@ -6,6 +6,7 @@ const nodeCmp = (a, b) => {
 
 const dijkstra = (grid, gridProps) => {
   const visitedNodes = [];
+  const optimal = [];
   const heap = new Heap(nodeCmp);
   heap.push(grid[gridProps.start.row][gridProps.start.col]);
 
@@ -18,6 +19,7 @@ const dijkstra = (grid, gridProps) => {
 
     node.visited = true;
     visitedNodes.push(node);
+    node.visitedIndex = visitedNodes.length - 1;
 
     const { row, col } = node;
     if (node.isStart) node.distance = 0;
@@ -49,6 +51,7 @@ const dijkstra = (grid, gridProps) => {
 
     while (prev != null) {
       prev.optimal = true;
+      optimal.push(prev);
       prev = prev.prev;
     }
   };
@@ -58,7 +61,7 @@ const dijkstra = (grid, gridProps) => {
 
   if (found) traceOptimalPath();
 
-  return [grid, visitedNodes];
+  return [grid, visitedNodes, optimal];
 };
 
 export default dijkstra;

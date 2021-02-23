@@ -1,10 +1,10 @@
 .node {
   flex: 1;
   border-right: 0.5px solid rgb(32, 32, 32);
-  height: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding-bottom: 1.5%;
+  padding-right: 1.5%;
+  position: relative;
+  overflow: hidden;
 }
 
 @keyframes visitedNode {
@@ -69,7 +69,7 @@
   0% {
     transform: scale(0.3);
     background-color: rgba(0, 0, 66, 0.75);
-    border-radius: 100%;
+    /* border-radius: 100%; */
   }
 
   50% {
@@ -90,9 +90,9 @@
 .node-visited {
   /* background-color: blue; */
   animation-name: visitedNode;
-  animation-duration: 0.75s;
+  animation-duration: 1s;
   animation-timing-function: ease-out;
-  animation-delay: 0;
+  animation-delay: calc(var(--delay) * var(--delayFactor));
   animation-direction: alternate;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -114,12 +114,32 @@
   animation-name: visitedEndNode;
 }
 
-.node-optimal {
-  background-color: yellow;
+@keyframes wallNodeAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: white;
+  }
+
+  75% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: black;
+  }
 }
 
 .node-wall {
   background-color: black;
+  /* animation-name: wallNodeAnimation;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running; */
 }
 
 .node-start {
@@ -128,4 +148,14 @@
 
 .node-end {
   background-color: red;
+}
+
+.node-weight {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  font-size: 1vw;
 }

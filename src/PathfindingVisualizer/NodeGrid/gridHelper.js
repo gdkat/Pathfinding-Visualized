@@ -1,6 +1,7 @@
 const defaultNode = {
   weight: 1,
   visited: false,
+  visitedIndex: 0,
   optimal: false,
   wall: false,
   prev: null,
@@ -9,6 +10,7 @@ const defaultNode = {
 
 const unvisitedNode = {
   visited: false,
+  visitedIndex: 0,
   optimal: false,
   prev: null,
   distance: Infinity,
