@@ -126,12 +126,12 @@
 
   100% {
     transform: scale(1);
-    background-color: black;
+    background-color: darkslategray;
   }
 }
 
 .node-wall {
-  background-color: black;
+  background-color: darkslategray;
   /* animation-name: wallNodeAnimation;
   animation-duration: 0.3s;
   animation-timing-function: ease-out;

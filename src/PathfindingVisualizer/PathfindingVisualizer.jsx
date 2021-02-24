@@ -6,123 +6,20 @@ import {
 import PathfindingContext from "../context/PathfindingContext";
 import "./PathfindingVisualizer.css";
 import NodeGrid from "./NodeGrid/NodeGrid";
-import { genNodeGrid, copyGrid } from "./NodeGrid/gridHelper";
-import supportedAlgorithms from "../search/supportedAlgorithms";
+import Settings from "./Settings/Settings";
 
 const PathfindingVisualizer = (props) => {
   const [state, dispatch] = useReducer(
     pathfindingReducer,
     pathfindingInitialState
   );
-  const { gridProps, grid, sortingProps } = state;
 
-  const reset = () => {
-    dispatch({ type: "SET_GRID", payload: genNodeGrid(gridProps) });
-    dispatch({ type: "SET_SORTING_INACTIVE" });
-  };
-
-  const softReset = () => {
-    dispatch({
-      type: "SET_GRID",
-      payload: copyGrid(grid, { unvisited: true }),
-    });
-    dispatch({ type: "SET_SORTING_INACTIVE" });
-  };
-
-  const performSearch = () => {
-    if (sortingProps.active) return;
-
-    dispatch({ type: "SET_SORTING_ACTIVE" });
-    const gridCopy = copyGrid(grid, { unvisited: true });
-    if (gridProps.start != null && gridProps.end != null) {
-      const [result] = supportedAlgorithms[sortingProps.type](
-        gridCopy,
-        gridProps
-      );
-      dispatch({ type: "SET_GRID", payload: result });
-    }
-  };
-
-  const onAnimationSpeedChange = (e) =>
-    dispatch({
-      type: "SET_SORTING_SPEED",
-      payload: parseFloat(e.target.value),
-    });
-
-  const onWeightedToggle = (e) => {
-    dispatch({ type: "SET_WEIGHTED_GRID", payload: e.target.checked });
-    e.target.checked === false &&
-      dispatch({
-        type: "SET_GRID",
-        payload: copyGrid(grid, { unvisited: true, weighted: false }),
-      });
-  };
-
-  const onAlgoToggle = (e) => {
-    softReset();
-    dispatch({
-      type: "SET_SORTING_TYPE",
-      payload: e.target.options[e.target.selectedIndex].text,
-    });
-  };
-
-  const generateRandomWeightedGraph = (e) => {
-    dispatch({
-      type: "SET_GRID",
-      payload: copyGrid(grid, { unvisited: true, weighted: true }),
-    });
-  };
+  const { grid } = state;
 
   return (
     <PathfindingContext.Provider value={[state, dispatch]}>
       <div className="pathfinding-visualizer">
-        <label for="cars">Choose an algorithm: </label>
-        <select
-          id="algos"
-          name="algos"
-          value={sortingProps.type}
-          onChange={onAlgoToggle}
-        >
-          {Object.keys(supportedAlgorithms).map((el, index) => (
-            <option key={index} value={el}>
-              {el}
-            </option>
-          ))}
-        </select>
-        <button className="visualizer-btn" onClick={performSearch}>
-          Visualize
-        </button>
-        <button className="soft-reset-btn" onClick={softReset}>
-          Soft Reset
-        </button>
-        <button className="reset-btn" onClick={reset}>
-          Reset
-        </button>
-        <input
-          type="checkbox"
-          id="weighted"
-          name="weighted"
-          value="weighted"
-          onClick={onWeightedToggle}
-          disabled={sortingProps.active}
-        />
-        {gridProps.weighted && (
-          <button
-            className="generate-random-weights-btn"
-            onClick={generateRandomWeightedGraph}
-            disabled={sortingProps.active}
-          >
-            Generate Random Weights
-          </button>
-        )}
-        <input
-          type="number"
-          step="1"
-          name="animation-speed"
-          onChange={onAnimationSpeedChange}
-          value={sortingProps.speed}
-          disabled={sortingProps.active}
-        />
+        <Settings />
         <NodeGrid nodeGrid={grid} />
       </div>
     </PathfindingContext.Provider>

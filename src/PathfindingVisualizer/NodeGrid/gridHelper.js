@@ -65,13 +65,13 @@ export const copyGrid = (grid, copyProps = {}) => {
 };
 
 export const replaceNode = (node, grid) => {
-  const newGrid = copyGrid(grid);
+  // const newGrid = copyGrid(grid);
 
   const { row, col } = node;
 
-  newGrid[row][col] = { ...node };
+  grid[row][col] = { ...node };
 
-  return newGrid;
+  return grid;
 };
 
 export const changeStartOrEndNode = (node, grid, end) => {

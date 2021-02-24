@@ -95,7 +95,7 @@ const Node = (props) => {
         "--delayFactor": `${sortingProps.speed}ms`,
       }}
     >
-      {weighted && !isStart && !isEnd && (
+      {weighted && !wall && !isStart && !isEnd && (
         <div className="node-weight">{weight}</div>
       )}
     </div>

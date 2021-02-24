@@ -35,7 +35,11 @@ export const initialState = {
 export const reducer = (state, action) => {
   switch (action.type) {
     case "SET_GRID_PROPS":
-      return { ...state, gridProps: action.payload };
+      return {
+        ...state,
+        gridProps: action.payload,
+        grid: genNodeGrid(action.payload),
+      };
     case "SET_WEIGHTED_GRID":
       return {
         ...state,
