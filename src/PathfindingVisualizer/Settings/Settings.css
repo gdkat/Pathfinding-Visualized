@@ -12,6 +12,12 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+.settings.pass-through {
+  pointer-events: none;
+  opacity: 0.3;
+  transition: 0.3s;
+}
+
 .settings h1 {
   font-size: large;
 }

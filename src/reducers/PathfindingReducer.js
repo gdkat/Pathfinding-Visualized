@@ -9,11 +9,11 @@ const initialGridProps = {
   cols: 50,
   start: {
     row: 10,
-    col: 25,
+    col: 10,
   },
   end: {
     row: 10,
-    col: 35,
+    col: 20,
   },
   weighted: false,
 };

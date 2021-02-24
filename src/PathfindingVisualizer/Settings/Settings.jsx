@@ -201,7 +201,7 @@ const Settings = (props) => {
 
   return (
     <div
-      className="settings"
+      className={"settings" + (state.mouseDown ? " pass-through" : "")}
       ref={settingsDiv}
       //onDragStart={(e) => e.preventDefault()}
       onMouseUp={(e) => {
@@ -213,12 +213,13 @@ const Settings = (props) => {
         });
       }}
       onMouseLeave={(e) => {
-        setDragging({
-          ...dragging,
-          active: false,
-          initialX: dragging.currentX,
-          initialY: dragging.currentY,
-        });
+        dragging.active &&
+          setDragging({
+            ...dragging,
+            active: false,
+            initialX: dragging.currentX,
+            initialY: dragging.currentY,
+          });
       }}
       onMouseDown={(e) => {
         setDragging({
