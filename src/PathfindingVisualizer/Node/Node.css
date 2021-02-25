@@ -1,6 +1,6 @@
 .node {
   flex: 1;
-  border-right: 0.5px solid rgb(32, 32, 32);
+  border: 0.5px solid rgb(32, 32, 32);
   padding-bottom: 1.5%;
   padding-right: 1.5%;
   position: relative;
@@ -132,6 +132,7 @@
 
 .node-wall {
   background-color: darkslategray;
+  transition: 0.3s;
   /* animation-name: wallNodeAnimation;
   animation-duration: 0.3s;
   animation-timing-function: ease-out;

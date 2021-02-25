@@ -3,10 +3,10 @@
 }
 
 .node-grid-row {
-  border-bottom: 0.5px solid rgb(32, 32, 32);
+  /* border-bottom: 0.5px solid rgb(32, 32, 32); */
   display: flex;
 }
 
-.node-grid-row:first-child {
-  border-top: 0.5px solid rgb(32, 32, 32);
+.node-grid-row:last-child .node {
+  border-bottom: 2px solid rgb(32, 32, 32);
 }

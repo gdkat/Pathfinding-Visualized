@@ -10,6 +10,7 @@
   cursor: move;
   color: white;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  transform: translate3d(0, 0, 0);
 }
 
 .settings.pass-through {

@@ -12,8 +12,8 @@ const Settings = (props) => {
     active: false,
     initialX: 0,
     initialY: 0,
-    draggingX: 0,
-    draggingY: 0,
+    currentX: 0,
+    currentY: 0,
     offsetX: 0,
     offsetY: 0,
   });
@@ -85,7 +85,7 @@ const Settings = (props) => {
     });
   };
 
-  function drag(e) {
+  const onDrag = (e) => {
     if (!dragging.active && e.currentTarget === settingsDiv.current) return;
 
     let currentX, currentY;
@@ -96,7 +96,7 @@ const Settings = (props) => {
     currentY = e.clientY - dragging.offsetY;
 
     setDragging({ ...dragging, currentX, currentY });
-  }
+  };
 
   const accordions = [
     {
@@ -141,7 +141,7 @@ const Settings = (props) => {
             id="grid-rows"
             name="grid-rows"
             value={gridProps.rows}
-            max={30}
+            // max={30}
             disabled={sortingProps.active}
             style={{
               width: 50,
@@ -159,7 +159,7 @@ const Settings = (props) => {
             id="grid-cols"
             name="grid-cols"
             value={gridProps.cols}
-            max={60}
+            // max={60}
             disabled={sortingProps.active}
             style={{
               width: 50,
@@ -178,7 +178,7 @@ const Settings = (props) => {
             id="weighted"
             name="weighted"
             value="weighted"
-            checked={gridProps.weighted}
+            defaultChecked={gridProps.weighted}
             onClick={onWeightedToggle}
             disabled={sortingProps.active}
           />
@@ -229,7 +229,7 @@ const Settings = (props) => {
           offsetY: e.clientY - dragging.initialY,
         });
       }}
-      onMouseMove={drag}
+      onMouseMove={onDrag}
     >
       <h1 className="settings-header">Pathfinding Visualizer</h1>
       <div className="settings-options">
