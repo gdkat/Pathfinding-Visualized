@@ -201,7 +201,10 @@ const Settings = (props) => {
 
   return (
     <div
-      className={"settings" + (state.mouseDown ? " pass-through" : "")}
+      className={
+        "settings" +
+        (state.mouseDown && !state.sortingProps.active ? " pass-through" : "")
+      }
       ref={settingsDiv}
       //onDragStart={(e) => e.preventDefault()}
       onMouseUp={(e) => {
@@ -233,8 +236,12 @@ const Settings = (props) => {
     >
       <h1 className="settings-header">Pathfinding Visualizer</h1>
       <div className="settings-options">
-        {accordions.map((accordion) => (
-          <Accordion header={accordion.header} body={accordion.body} />
+        {accordions.map((accordion, index) => (
+          <Accordion
+            key={accordion.header + index}
+            header={accordion.header}
+            body={accordion.body}
+          />
         ))}
       </div>
       <div>

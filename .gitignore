@@ -10,7 +10,8 @@
 /.vscode
 
 # production
-/build
+# disabled due to low host resources, need to compile on local
+# /build
 
 # misc
 .DS_Store
